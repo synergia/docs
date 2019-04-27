@@ -1,4 +1,69 @@
-\ProvidesPackage{synergia}[20161012]
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{synergia}[2019/04/29]
+
+\RequirePackage[polish]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{graphicx}
+\RequirePackage{geometry}
+\RequirePackage{nopageno}
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{tikz}
+	\usetikzlibrary{tikzmark}
+	\usetikzlibrary{calc}
+\RequirePackage{eso-pic}
+
+\graphicspath{{./assets/}}
+
+\newlength{\htopmargin}
+\setlength{\htopmargin}{4cm}
+\newlength{\hleftmargin}
+\setlength{\hleftmargin}{5.4cm}
 
 
+\geometry{
+    left    =   \hleftmargin,
+    right   =   1cm,
+    top     =   5cm,
+    bottom  =   1cm
+}
 
+\definecolor{burgundy}{rgb}{0.5, 0.0, 0.13}
+
+% Figure definitions
+\tikzset{
+  margin/.pic = {
+    \coordinate (pointA) at ($(current page.north west) + (\hleftmargin-0.5cm, -\htopmargin+0.5cm)$);
+    \coordinate (pointB) at ($(current page.north east) + (-1, -\htopmargin+0.5cm)$);
+    \coordinate (pointC) at ($(current page.south west) + (\hleftmargin-0.5cm, 1)$);
+    \draw (pointA) -- (pointB);
+    \draw (pointA) -- (pointC);
+  }
+}
+
+\newcommand{\Margin}{%
+  \begin{tikzpicture}[remember picture,overlay,x=1cm,y=1cm]
+    \path (current page.center) pic {margin};
+    \node[text width=\hleftmargin] at (3.5,5) {\footnotesize Międzywydziałowe Koło
+    \\ Naukowe Mechatroniki i 
+    \\Robotyki "Synergia"
+    \\Politechnika Wrocławska
+    \newline
+    \\ul. Łukasiewicza 7/9
+    \\50-371 Wrocław
+    \newline
+    \newline
+    tel. +48 71 320 27 10\\
+    e-mail: \\synergia@pwr.wroc.pl\\
+    www.synergia.pwr.wroc.pl};
+    \node[inner sep=0pt] (russell) at ($(pointA) + (1cm, 1cm)$)
+    {\includegraphics[width=.5\textwidth]{logo_pwr_pl.pdf}};
+    \node[inner sep=0pt] (russell) at ($(pointB) + (-5cm, 1cm)$)
+    {\includegraphics[width=.5\textwidth]{synergia-logo-horizontal}};
+    \node at ($(pointA) + (2.2cm, -0.5cm)$) {\color{burgundy} MKNMiR "Synergia"};
+    \node[text width=5cm] at ($(pointB) + (-1cm, -0.5cm)$) {\today};
+  \end{tikzpicture}%
+  
+}
+\AddToShipoutPictureBG{\Margin}
+
+\endinput
